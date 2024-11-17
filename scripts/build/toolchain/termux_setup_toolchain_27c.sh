@@ -148,12 +148,12 @@ EOF
 		   $_TERMUX_TOOLCHAIN_TMPDIR/bin/$HOST_PLAT-clang++
 
 		cat > $_TERMUX_TOOLCHAIN_TMPDIR/bin/ccache-$HOST_PLAT-clang <<EOF
-exec ccache.local $HOST_PLAT-clang "\$@"
+exec ccache.local $TERMUX_STANDALONE_TOOLCHAIN/bin/$HOST_PLAT-clang "\$@"
 EOF
 		chmod a+x $_TERMUX_TOOLCHAIN_TMPDIR/bin/ccache-$HOST_PLAT-clang
 
 		cat > $_TERMUX_TOOLCHAIN_TMPDIR/bin/ccache-$HOST_PLAT-clang++ <<EOF
-exec ccache.local $HOST_PLAT-clang++ "\$@"
+exec ccache.local $TERMUX_STANDALONE_TOOLCHAIN/$HOST_PLAT-clang++ "\$@"
 EOF
 		chmod a+x $_TERMUX_TOOLCHAIN_TMPDIR/bin/ccache-$HOST_PLAT-clang++
 
