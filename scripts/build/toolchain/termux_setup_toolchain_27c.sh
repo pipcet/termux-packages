@@ -128,11 +128,13 @@ termux_setup_toolchain_27c() {
 	for EXEC in clang clang++; do
 	    mv $_TERMUX_TOOLCHAIN_TMPDIR/bin/$EXEC $_TERMUX_TOOLCHAIN_TMPDIR/bin/$EXEC.uncached
 	    cat > $_TERMUX_TOOLCHAIN_TMPDIR/bin/$EXEC <<EOF
+#!/bin/bash
 exec ccache.local $TERMUX_STANDALONE_TOOLCHAIN/bin/clang-18 "\$@"
 EOF
 	    chmod a+x $_TERMUX_TOOLCHAIN_TMPDIR/bin/$EXEC
 	done
 	cat > $_TERMUX_TOOLCHAIN_TMPDIR/bin/clang++ <<EOF
+#!/bin/bash
 exec ccache.local $TERMUX_STANDALONE_TOOLCHAIN/bin/clang++-18 "\$@"
 EOF
 	chmod a+x $_TERMUX_TOOLCHAIN_TMPDIR/bin/clang++
@@ -148,11 +150,13 @@ EOF
 		   $_TERMUX_TOOLCHAIN_TMPDIR/bin/$HOST_PLAT-clang++
 
 		cat > $_TERMUX_TOOLCHAIN_TMPDIR/bin/ccache-$HOST_PLAT-clang <<EOF
+#!/bin/bash
 exec ccache.local $TERMUX_STANDALONE_TOOLCHAIN/bin/$HOST_PLAT-clang "\$@"
 EOF
 		chmod a+x $_TERMUX_TOOLCHAIN_TMPDIR/bin/ccache-$HOST_PLAT-clang
 
 		cat > $_TERMUX_TOOLCHAIN_TMPDIR/bin/ccache-$HOST_PLAT-clang++ <<EOF
+#!/bin/bash
 exec ccache.local $TERMUX_STANDALONE_TOOLCHAIN/$HOST_PLAT-clang++ "\$@"
 EOF
 		chmod a+x $_TERMUX_TOOLCHAIN_TMPDIR/bin/ccache-$HOST_PLAT-clang++
