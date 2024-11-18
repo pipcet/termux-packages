@@ -24,7 +24,7 @@ termux_setup_toolchain_27c() {
 
 	if [ "$TERMUX_ON_DEVICE_BUILD" = "false" ]; then
 		export PATH=$TERMUX_STANDALONE_TOOLCHAIN/bin:$PATH
-		export CC_FOR_BUILD=gcc
+		export CC_FOR_BUILD="ccache.local gcc"
 		export PKG_CONFIG=$TERMUX_STANDALONE_TOOLCHAIN/bin/pkg-config
 		export PKGCONFIG=$PKG_CONFIG
 		export CCTERMUX_HOST_PLATFORM=$TERMUX_HOST_PLATFORM$TERMUX_PKG_API_LEVEL
@@ -157,7 +157,7 @@ EOF
 
 		cat > $_TERMUX_TOOLCHAIN_TMPDIR/bin/ccache-$HOST_PLAT-clang++ <<EOF
 #!/bin/bash
-exec ccache.local $TERMUX_STANDALONE_TOOLCHAIN/$HOST_PLAT-clang++ "\$@"
+exec ccache.local $TERMUX_STANDALONE_TOOLCHAIN/bin/$HOST_PLAT-clang++ "\$@"
 EOF
 		chmod a+x $_TERMUX_TOOLCHAIN_TMPDIR/bin/ccache-$HOST_PLAT-clang++
 

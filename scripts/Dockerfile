@@ -31,14 +31,22 @@ RUN apt-get update && \
 	apt-get clean && \
 	rm -rf /var/lib/apt/lists/*
 
+
+COPY ./docker-entrypoint.sh /usr/bin/
+RUN chmod a+x /usr/bin/docker-entrypoint.sh
+
 # Switch User
 USER builder:builder
 
 RUN mkdir -p /home/builder/.config/ccache
 RUN echo 'max_size = 0' >> /home/builder/.config/ccache/ccache.conf
 RUN echo 'compression = false' >> /home/builder/.config/ccache/ccache.conf
-RUN echo 'debug = true' >> /home/builder/.config/ccache/ccache.conf
-RUN echo 'debug_dir = /home/builder/termux-packages/ccache-debug/' >> /home/builder/.config/ccache/ccache.conf
+# RUN echo 'debug = true' >> /home/builder/.config/ccache/ccache.conf
+# RUN echo 'debug_dir = /home/builder/termux-packages/termux-build/_cache/ccache-debug' >> /home/builder/.config/ccache/ccache.conf
+RUN echo 'cache_dir = /home/builder/termux-packages/termux-build/_cache/ccache' >> /home/builder/.config/ccache/ccache.conf
+
+RUN mkdir -p /home/builder/termux-packages/termux-build
 
 # We expect this to be mounted with '-v $PWD:/home/builder/termux-packages':
 WORKDIR /home/builder/termux-packages
+ENTRYPOINT [ "/usr/bin/docker-entrypoint.sh" ]

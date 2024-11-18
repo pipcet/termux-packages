@@ -30,7 +30,8 @@ termux_step_make() {
 	sed -i'' -E '/^org\.gradle\.jvmargs=.*/d' gradle.properties
 
 	export ANDROID_HOME
-	export GRADLE_OPTS="-Dorg.gradle.daemon=false -Xmx1536m -Dorg.gradle.java.home=/usr/lib/jvm/java-1.17.0-openjdk-amd64"
+	export GRADLE_USER_HOME="/home/builder/termux-packages/termux-build/_cache/gradle"
+	export GRADLE_OPTS="-Dorg.gradle.home=/home/builder/termux-packages/termux-build/_cache/gradle -Dorg.gradle.daemon=false -Xmx1536m -Dorg.gradle.java.home=/usr/lib/jvm/java-1.17.0-openjdk-amd64"
 
 	$TERMUX_PKG_TMPDIR/gradle/gradle-$_GRADLE_VERSION/bin/gradle \
 		:app:assembleRelease

@@ -1,0 +1,44 @@
+diff -p2 -r -u src/loader/CMakeLists.txt src-fixed/loader/CMakeLists.txt
+--- src/loader/CMakeLists.txt	2024-11-04 16:36:58.000000000 -0000
++++ src-fixed/loader/CMakeLists.txt	2024-11-17 09:57:02.265492951 -0000
+@@ -225,8 +225,8 @@ end
+             target_compile_options(asm_offset PRIVATE /Od)
+e 
+-            find_package(Python3 REQUIRED QUIET)
++            find_package(Python REQUIRED QUIET)
+             # Run parse_asm_values.py on asm_offset's assembly file to generate the gen_defines.asm, which the asm code depends on
+             add_custom_command(TARGET asm_offset POST_BUILD
+-                COMMAND Python3::Interpreter ${PROJECT_SOURCE_DIR}/scripts/parse_asm_values.py "${CMAKE_CURRENT_BINARY_DIR}/gen_defines.asm"
++                COMMAND Python::Interpreter ${PROJECT_SOURCE_DIR}/scripts/parse_asm_values.py "${CMAKE_CURRENT_BINARY_DIR}/gen_defines.asm"
+                     "$<TARGET_FILE_DIR:asm_offset>/asm_offset.asm" "${LOADER_ASM_DIALECT}" "${CMAKE_C_COMPILER_ID}" "${SYSTEM_PROCESSOR}"
+                 BYPRODUCTS gen_defines.asm
+@@ -350,8 +350,8 @@ elseif(UNIX OR MINGW OR (WIN32 AND USE_G
+             message(STATUS "CMAKE_CROSSCOMPILING FALSE")
+ 
+-            find_package(Python3 REQUIRED QUIET)
++            find_package(Python REQUIRED QUIET)
+             # Run parse_asm_values.py on asm_offset's assembly file to generate the gen_defines.asm, which the asm code depends on
+             add_custom_command(TARGET asm_offset POST_BUILD
+-                COMMAND Python3::Interpreter ${PROJECT_SOURCE_DIR}/scripts/parse_asm_values.py "${ASM_OFFSET_EXECUTABLE_LOCATION}"
++                COMMAND Python::Interpreter ${PROJECT_SOURCE_DIR}/scripts/parse_asm_values.py "${ASM_OFFSET_EXECUTABLE_LOCATION}"
+                     "${ASM_OFFSET_INTERMEDIATE_LOCATION}" "GAS" "${CMAKE_C_COMPILER_ID}" "${ASM_OFFSET_SYSTEM_PROCESSOR}"
+                 BYPRODUCTS gen_defines.asm
+Only in src-fixed/loader: CMakeLists.txt~
+diff -p2 -r -u src/scripts/CMakeLists.txt src-fixed/scripts/CMakeLists.txt
+--- src/scripts/CMakeLists.txt	2024-11-04 16:36:58.000000000 -0000
++++ src-fixed/scripts/CMakeLists.txt	2024-11-17 09:57:11.505493094 -0000
+@@ -17,5 +17,5 @@
+ option(UPDATE_DEPS "Run update_deps.py for user")
+ if (UPDATE_DEPS)
+-    find_package(Python3 REQUIRED QUIET)
++    find_package(Python REQUIRED QUIET)
+ 
+     set(update_dep_py "${CMAKE_CURRENT_LIST_DIR}/update_deps.py")
+@@ -125,5 +125,5 @@ if (UPDATE_DEPS)
+     else()
+         execute_process(
+-            COMMAND ${Python3_EXECUTABLE} ${update_dep_command}
++            COMMAND ${Python_EXECUTABLE} ${update_dep_command}
+             RESULT_VARIABLE _update_deps_result
+         )
+Only in src-fixed/scripts: CMakeLists.txt~

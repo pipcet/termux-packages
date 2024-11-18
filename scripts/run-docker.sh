@@ -24,7 +24,6 @@ else
 fi
 VOLUME_TERMUX_BUILD=$REPOROOT/termux-build:$CONTAINER_HOME_DIR/.termux-build
 VOLUME_DATA=$REPOROOT/data:/data
-VOLUME_CCACHE=$REPOROOT/ccache:$CONTAINER_HOME_DIR/.cache/ccache
 
 : ${TERMUX_BUILDER_IMAGE_NAME:=ghcr.io/termux/package-builder}
 : ${CONTAINER_NAME:=termux-package-builder}
@@ -36,6 +35,9 @@ if [ -n "${TERMUX_DOCKER_USE_SUDO-}" ]; then
 else
 	SUDO=""
 fi
+
+(cd "$TERMUX_SCRIPTDIR"/scripts && docker build . -t "${TERMUX_BUILDER_IMAGE_NAME}")
+docker stop termux-package-builder || true
 
 echo "Running container '$CONTAINER_NAME' from image '$TERMUX_BUILDER_IMAGE_NAME'..."
 
@@ -49,13 +51,13 @@ fi
 $SUDO docker start $CONTAINER_NAME >/dev/null 2>&1 || {
 	echo "Creating new container..."
 	$SUDO docker run \
+	        --rm \
 		--detach \
 		--init \
 		--name $CONTAINER_NAME \
 		--volume $VOLUME_PACKAGES \
 		--volume $VOLUME_TERMUX_BUILD \
 		--volume $VOLUME_DATA \
-		--volume $VOLUME_CCACHE \
 		$SEC_OPT \
 		--tty \
 		$TERMUX_BUILDER_IMAGE_NAME

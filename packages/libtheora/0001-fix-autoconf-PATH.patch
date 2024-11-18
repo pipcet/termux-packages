@@ -1,0 +1,21 @@
+diff -u src/configure src2/configure
+--- src/configure	2009-10-01 18:04:08.000000000 -0000
++++ src2/configure	2024-11-18 16:52:32.484277813 -0000
+@@ -13031,7 +13031,6 @@
+   fi
+ 
+ 
+-  PATH="$prefix/bin:$prefix/usr/bin:$PATH"
+   # Extract the first word of "sdl-config", so it can be a program name with args.
+ set dummy sdl-config; ac_word=$2
+ { $as_echo "$as_me:$LINENO: checking for $ac_word" >&5
+Only in src2: configure~
+Common subdirectories: src/doc and src2/doc
+Common subdirectories: src/examples and src2/examples
+Common subdirectories: src/include and src2/include
+Common subdirectories: src/lib and src2/lib
+Common subdirectories: src/m4 and src2/m4
+Common subdirectories: src/macosx and src2/macosx
+Common subdirectories: src/symbian and src2/symbian
+Common subdirectories: src/tests and src2/tests
+Common subdirectories: src/win32 and src2/win32

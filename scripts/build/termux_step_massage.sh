@@ -1,4 +1,5 @@
 termux_step_massage() {
+        echo "$(date --iso=s) START massage"
 	[ "$TERMUX_PKG_METAPACKAGE" = "true" ] && return
 
 	cd "$TERMUX_PKG_MASSAGEDIR/$TERMUX_PREFIX_CLASSICAL"
@@ -47,6 +48,7 @@ termux_step_massage() {
 	# Remove world permissions and make sure that user still have read-write permissions.
 	chmod -Rf u+rw,g-rwx,o-rwx . || true
 
+        echo "$(date --iso=s) massage first loop"
 	if [ "$TERMUX_PACKAGE_LIBRARY" = "bionic" ]; then
 		if [ "$TERMUX_PKG_NO_STRIP" != "true" ] && [ "$TERMUX_DEBUG_BUILD" = "false" ]; then
 			# Strip binaries. file(1) may fail for certain unusual files, so disable pipefail.
@@ -64,6 +66,7 @@ termux_step_massage() {
 		fi
 	fi
 
+        echo "$(date --iso=s) massage second loop"
 	local pattern=""
 	for file in ${TERMUX_PKG_NO_SHEBANG_FIX_FILES}; do
 		if [[ -z "${pattern}" ]]; then
@@ -76,6 +79,7 @@ termux_step_massage() {
 		pattern='(|./)('"${pattern}"')$'
 	fi
 
+        echo "$(date --iso=s) massage third loop"
 	if [ "$TERMUX_PKG_NO_SHEBANG_FIX" != "true" ]; then
 		# Fix shebang paths:
 		while IFS= read -r -d '' file; do
@@ -99,6 +103,7 @@ termux_step_massage() {
 
 	find . -type d -empty -delete # Remove empty directories
 
+        echo "$(date --iso=s) massage fourth loop"
 	if [ -d ./${ADDING_PREFIX}share/man ]; then
 		# Remove non-english man pages:
 		find ./${ADDING_PREFIX}share/man -mindepth 1 -maxdepth 1 -type d ! -name man\* | xargs -r rm -rf
@@ -132,6 +137,7 @@ termux_step_massage() {
 		fi
 	fi
 
+        echo "$(date --iso=s) massage fifth loop"
 	local HARDLINKS
 	HARDLINKS="$(find . -type f -links +1)"
 	if [ -n "$HARDLINKS" ]; then
@@ -176,6 +182,7 @@ termux_step_massage() {
 	# Check so that package is not affected by
 	# https://github.com/android/ndk/issues/1614, or
 	# https://github.com/termux/termux-packages/issues/9944
+        echo "$(date --iso=s) massage sixth loop"
 	if [[ "${TERMUX_PACKAGE_LIBRARY}" == "bionic" ]]; then
 		echo "INFO: READELF=${READELF} ... $(command -v ${READELF})"
 		export pattern_file_undef=$(mktemp)
@@ -346,6 +353,7 @@ termux_step_massage() {
 
 	# .. remove empty directories (NOTE: keep this last):
 	find . -type d -empty -delete
+        echo "$(date --iso=s) FINISH massage"
 }
 
 # Local function called by termux_step_massage

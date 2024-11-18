@@ -46,10 +46,14 @@ termux_setup_rust() {
 		TERMUX_RUST_VERSION="beta"
 	fi
 
-	curl https://sh.rustup.rs -sSfo "${TERMUX_PKG_TMPDIR}"/rustup.sh
-	sh "${TERMUX_PKG_TMPDIR}"/rustup.sh -y --default-toolchain "${TERMUX_RUST_VERSION}"
+	export CARGO_HOME="${TERMUX_COMMON_CACHEDIR}/cargo"
+	export RUSTUP_HOME="${TERMUX_COMMON_CACHEDIR}/rustup"
+	if ! [ -d "${TERMUX_COMMON_CACHEDIR}/rustup" ]; then
+		curl https://sh.rustup.rs -sSfo "${TERMUX_PKG_TMPDIR}"/rustup.sh
+		sh "${TERMUX_PKG_TMPDIR}"/rustup.sh -y --default-toolchain "${TERMUX_RUST_VERSION}"
+	fi
 
-	export PATH="${HOME}/.cargo/bin:${PATH}"
+	export PATH="${CARGO_HOME}/bin:${PATH}"
 
 	rustup target add "${CARGO_TARGET_NAME}"
 }
