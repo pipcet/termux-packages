@@ -18,7 +18,9 @@ termux_setup_golang() {
 
 		TERMUX_BUILDGO_FOLDER+="-r1"
 
-		export GOROOT=$TERMUX_BUILDGO_FOLDER
+		export GOROOT="$TERMUX_BUILDGO_FOLDER"
+		export GOCACHE="${TERMUX_COMMON_CACHEDIR}/gocache"
+		export GOMODCACHE="${TERMUX_COMMON_CACHEDIR}/gomodcache"
 		export PATH=${GOROOT}/bin:${PATH}
 
 		if [ -d "$TERMUX_BUILDGO_FOLDER" ]; then return; fi
