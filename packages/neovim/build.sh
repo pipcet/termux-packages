@@ -83,6 +83,14 @@ termux_step_post_make_install() {
 
 	# Tree-sitter grammars are packaged separately and installed into TERMUX_PREFIX/lib/tree_sitter.
 	ln -sf "${TERMUX_PREFIX}"/lib/tree_sitter "${TERMUX_PREFIX}"/share/nvim/runtime/parser
+
+	mv "${TERMUX_PREFIX}"/bin/nvim "${TERMUX_PREFIX}"/bin/nvim.bin
+	cat <<-EOF > "${TERMUX_PREFIX}"/bin/nvim
+#!/bin/sh
+LD_PRELOAD="\${LD_PRELOAD}:libluajit.so"
+exec "${TERMUX_PREFIX}"/bin/nvim.bin "\$@"
+EOF
+	chmod a+x "${TERMUX_PREFIX}"/bin/nvim
 }
 
 termux_step_create_debscripts() {
