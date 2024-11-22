@@ -1,0 +1,19 @@
+diff -ur a/src/framework/ui/internal/platform/linux/linuxplatformtheme.cpp b/src/framework/ui/internal/platform/linux/linuxplatformtheme.cpp
+--- a/src/framework/ui/internal/platform/linux/linuxplatformtheme.cpp	2024-10-23 14:43:07.000000000 -0000
++++ b/src/framework/ui/internal/platform/linux/linuxplatformtheme.cpp	2024-11-21 20:30:36.320225358 -0000
+@@ -58,9 +58,12 @@
+ {
+     const QDBusConnection connection = QDBusConnection::sessionBus();
+ 
+-    const auto iface = connection.interface();
+-    if (!iface->isServiceRegistered(service)) {
+-        return false;
++    if (const auto iface = connection.interface()) {
++	if (!iface->isServiceRegistered(service)) {
++	    return false;
++	}
++    } else {
++	return false;
+     }
+ 
+     QDBusReply<QVariant> reply = getSystemTheme();
