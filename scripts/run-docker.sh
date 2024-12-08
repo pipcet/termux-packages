@@ -36,7 +36,7 @@ else
 	SUDO=""
 fi
 
-(cd "$TERMUX_SCRIPTDIR"/scripts && docker build . -t "${TERMUX_BUILDER_IMAGE_NAME}")
+(cd "$TERMUX_SCRIPTDIR"/scripts && docker build . -t "${TERMUX_BUILDER_IMAGE_NAME}" || true)
 docker stop termux-package-builder || true
 
 echo "Running container '$CONTAINER_NAME' from image '$TERMUX_BUILDER_IMAGE_NAME'..."
@@ -73,10 +73,10 @@ $SUDO docker start $CONTAINER_NAME >/dev/null 2>&1 || {
 }
 
 # Set traps to ensure that the process started with docker exec and all its children are killed.
-. "$TERMUX_SCRIPTDIR/scripts/utils/docker/docker.sh"; docker__setup_docker_exec_traps
+# . "$TERMUX_SCRIPTDIR/scripts/utils/docker/docker.sh"; docker__setup_docker_exec_traps
 
 if [ "$#" -eq "0" ]; then
 	set -- bash
 fi
 
-$SUDO docker exec --env "DOCKER_EXEC_PID_FILE_PATH=$DOCKER_EXEC_PID_FILE_PATH" --interactive $DOCKER_TTY $CONTAINER_NAME "$@"
+$SUDO docker exec --interactive $DOCKER_TTY $CONTAINER_NAME "$@"

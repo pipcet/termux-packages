@@ -12,6 +12,7 @@ TERMUX_PKG_BUILD_IN_SRC=true
 TERMUX_PKG_NO_STRIP=true
 
 termux_step_configure() {
+	# XXX unconditional curl
 	curl -Lo- https://github.com/luvit/lit/raw/"$(
 		source "${TERMUX_SCRIPTDIR}/packages/lit/build.sh"
 		echo "${TERMUX_PKG_VERSION}"

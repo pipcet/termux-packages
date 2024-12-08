@@ -62,7 +62,9 @@ export TERMUX_REPO_PKG_FORMAT=$(jq --raw-output '.pkg_format // "debian"' ${TERM
 
 # Special variable for internal use. It forces script to ignore
 # lock file.
-: "${TERMUX_BUILD_IGNORE_LOCK:=false}"
+: "${TERMUX_BUILD_IGNORE_LOCK:=true}"
+
+: "${TERMUX_DOWNLOAD_ONLY:=false}"
 
 # Utility function to log an error message and exit with an error code.
 # shellcheck source=scripts/build/termux_error_exit.sh
@@ -448,6 +450,17 @@ while (($# >= 1)); do
 				termux_error_exit "./build-package.sh: option '--format' requires an argument"
 			fi
 			;;
+		--timeout)
+			if [ $# -ge 2 ]; then
+				shift 1
+				export TERMUX_PACKAGE_TIMEOUT="$1"
+			else
+				termux_error_exit "./build-package.sh: option '--timeout' requires an argument"
+			fi
+			;;
+		--download-only)
+			export TERMUX_DOWNLOAD_ONLY=true
+			;;
 		--library)
 			if [ $# -ge 2 ]; then
 				shift
@@ -640,6 +653,9 @@ for ((i=0; i<${#PACKAGE_LIST[@]}; i++)); do
 			termux_step_get_source
 			cd "$TERMUX_PKG_SRCDIR"
 			termux_step_post_get_source
+			if [ "$TERMUX_DOWNLOAD_ONLY" = "true" ]; then
+				exit 0;
+			fi
 			termux_step_handle_host_build
 		fi
 

@@ -22,6 +22,7 @@ termux_step_make_install() {
 	local LOADER_URL="https://github.com/termux/termux-x11/releases/download/nightly/termux-x11-nightly-1.03.01-0-any.pkg.tar.xz"
 	install -t $TERMUX_PREFIX/bin -m 755 termux-x11 termux-x11-preference
 	mkdir -p $TERMUX_PREFIX/libexec/termux-x11
+	# XXX wget
 	wget -qO- $LOADER_URL | tar -OJxf - --wildcards "*loader.apk" > $TERMUX_PREFIX/libexec/termux-x11/loader.apk
 }
 

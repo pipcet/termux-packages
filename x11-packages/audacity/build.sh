@@ -59,6 +59,7 @@ obtain_deb_url() {
 	local deb_url
 
 	for ((attempt=1; attempt<=retries; attempt++)); do
+		# XXX unconditional curl
 		local PAGE="$(curl -s "$url")"
 		>&2 echo page
 		>&2 echo "$PAGE"
@@ -96,6 +97,7 @@ termux_step_host_build() {
 		# To avoid messing with `apt update` and `apt download` we will get download links directly from ubuntu servers.
 		mkdir "$_PREFIX"
 		for i in libgtk2.0-0t64 libgtk2.0-dev libasound2-dev; do
+		        # XXX unconditional wget
 			wget "$(obtain_deb_url $i)" -O "$TERMUX_PKG_HOSTBUILD_DIR/tmp.deb"
 			dpkg-deb -R "$TERMUX_PKG_HOSTBUILD_DIR/tmp.deb" "$TERMUX_PKG_HOSTBUILD_DIR/tmp"
 			cp -rf "$TERMUX_PKG_HOSTBUILD_DIR"/tmp/* "$_PREFIX"

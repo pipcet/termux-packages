@@ -78,6 +78,7 @@ termux_step_configure () {
 }
 
 if [ ! -e "qtbase-everywhere-opensource-src-${TERMUX_PKG_VERSION}.tar.xz" ]; then
+    # XXX curl?!
     echo "[*] Downloading Qt sources..."
     curl -L --output "qtbase-everywhere-opensource-src-${TERMUX_PKG_VERSION}.tar.xz" "${TERMUX_PKG_SRCURL}"
 fi

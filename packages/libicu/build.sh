@@ -21,6 +21,7 @@ TERMUX_PKG_EXTRA_CONFIGURE_ARGS="--disable-samples --disable-tests --with-cross-
 
 termux_step_post_get_source() {
 	rm $TERMUX_PKG_SRCDIR/LICENSE
+	# XXX unconditional curl
 	curl -o $TERMUX_PKG_SRCDIR/LICENSE -L https://raw.githubusercontent.com/unicode-org/icu/release-${TERMUX_PKG_VERSION//./-}/LICENSE
 	TERMUX_PKG_SRCDIR+="/source"
 	find . -type f | xargs touch

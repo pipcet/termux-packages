@@ -22,6 +22,7 @@ termux_step_pre_configure() {
 termux_step_configure() {
 	# Arturo 0.9.83 can only build with Nim 1.6.20
 	export CHOOSENIM_CHOOSE_VERSION=1.6.20
+	# XXX unconditional curl
 	curl https://nim-lang.org/choosenim/init.sh -sSf | bash -s -- -y
 	export PATH="$HOME/.nimble/bin:$PATH"
 }
